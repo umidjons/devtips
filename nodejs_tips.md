@@ -1,12 +1,12 @@
 # NodeJS Tips & Tricks
-- [Search a package](#search-package)
-- [Detailed view of a package](#package-details)
-- [Create custom module](#create-custom-module)
+- [Search a package]()
+- [Detailed view of a package]()
+- [Create custom module]()
 
-#### Search a package: {#search-package}
+# Search a package
 `npm search <package>`
 
-#### Detailed view of a package {#package-details}
+# Detailed view of a package
 `npm view <package>`
 
 #### Install a package
@@ -140,7 +140,7 @@ require('fs').readFile(process.argv[2], 'utf-8', function(err, data)
 });
 ```
 
-#### Example: Create custom module #### {#create-custom-module}
+# Create custom module
 Read files from specified directory and filter by given extension.
 File `myfilter.js`:
 ```js
