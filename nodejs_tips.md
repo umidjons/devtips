@@ -118,6 +118,25 @@ require('fs').readFile(process.argv[2], function(err, data)
 		console.log(data.toString().split('\n').length-1);
 });
 ```
+
+If we supply `utf-8` as second parameter to `readFile`, then no `data.toString()` call needed.
+
+```js
+if(process.argv.length<3)
+{
+	console.error('File not supplied.');
+	process.exit(1);
+}
+
+require('fs').readFile(process.argv[2], 'utf-8', function(err, data)
+{
+	if(err)
+		console.error(err);
+	else
+		console.log(data.split('\n').length-1);
+});
+```
+
 #### Example: Create custom module ####
 Read files from specified directory and filter by given extension.
 File `myfilter.js`:
