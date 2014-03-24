@@ -1,7 +1,8 @@
 # NodeJS Tips & Tricks
-- [Search a package]()
-- [Detailed view of a package]()
-- [Create custom module]()
+- [Search a package](#search-a-package)
+- [Detailed view of a package](#detailed-view-of-a-package)
+- [Install a package](#install-a-package)
+- [Create custom module](#create-custom-module)
 
 # Search a package
 `npm search <package>`
@@ -9,7 +10,7 @@
 # Detailed view of a package
 `npm view <package>`
 
-#### Install a package
+# Install a package
 `npm install <package>`
 
 #### Install a package globally
