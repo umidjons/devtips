@@ -2,6 +2,13 @@
 - [Search a package](#search-a-package)
 - [Detailed view of a package](#detailed-view-of-a-package)
 - [Install a package](#install-a-package)
+- [Install a package globally](#install-a-package-globally)
+- [Create `package.json` file](#create-packagejson-file)
+- [Install NodeJS on Linux from source](#install-nodejs-on-linux-from-source)
+- [Learn NodeJS as interactive game](#learn-nodejs-as-interactive-game)
+- [Sum of numbers from command line](#sum-of-numbers-from-command-line)
+- [Read file content synchronously](#read-file-content-synchronously)
+- [Read file content asynchronously](#read-file-content-asynchronously)
 - [Create custom module](#create-custom-module)
 
 # Search a package
@@ -13,14 +20,14 @@
 # Install a package
 `npm install <package>`
 
-#### Install a package globally
+# Install a package globally
 `npm install -g <package>`
 `npm install --global <package>`
 
-#### Create `package.json` file
+# Create `package.json` file
 `npm init`
 
-#### Install NodeJS on Linux from source
+# Install NodeJS on Linux from source
 Download source from site:
 ```sh
 wget http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz
@@ -48,7 +55,7 @@ Check `node` version with:
 node -v
 ```
 
-#### Learn NodeJS with interactive game
+# Learn NodeJS as interactive game
 Install `learnyounode`:
 ```sh
 sudo npm install -g learnyounode
@@ -58,16 +65,7 @@ To start game type:
 learnyounode
 ```
 
-#### Example `Hello World`
-```js
-console.log('HELLO WORLD');
-```
-Output:
-```
-HELLO WORLD
-```
-
-#### Example sum of numbers from command line
+# Sum of numbers from command line
 We use `process.argv` to accept arguments from command line:
 ```js
 console.log(process.argv);
@@ -91,7 +89,7 @@ Output:
 ```
 Sum: 6
 ```
-#### Example: Read file content synchronously and print number of lines ####
+# Read file content synchronously
 ```js
 if(process.argv.length<3)
 {
@@ -106,7 +104,7 @@ var linesCount=require('fs')
 	.length-1;
 console.log(linesCount);
 ```
-#### Example: Read file content asynchronously and print number of lines ####
+# Read file content asynchronously
 ```js
 if(process.argv.length<3)
 {
@@ -178,7 +176,7 @@ Executing program:
 ```sh
 node my.js /path/to/files txt
 ```
-##### Further improvements to filter items in array
+## Further improvements to filter items in array
 
 Use `Array.filter` to filter items:
 
