@@ -1,9 +1,12 @@
 # NodeJS Tips & Tricks
+- [Search a package](#search-package)
+- [Detailed view of a package](#package-details)
+- [Create custom module](#create-custom-module)
 
-#### Search a package:
+#### Search a package: {#search-package}
 `npm search <package>`
 
-#### Detailed view of a package
+#### Detailed view of a package {#package-details}
 `npm view <package>`
 
 #### Install a package
@@ -137,7 +140,7 @@ require('fs').readFile(process.argv[2], 'utf-8', function(err, data)
 });
 ```
 
-#### Example: Create custom module ####
+#### Example: Create custom module #### {#create-custom-module}
 Read files from specified directory and filter by given extension.
 File `myfilter.js`:
 ```js
@@ -173,4 +176,24 @@ f.filter(process.argv[2], process.argv[3], function(err,files)
 Executing program:
 ```sh
 node my.js /path/to/files txt
+```
+##### Further improvements to filter items in array
+
+Use `Array.filter` to filter items:
+
+```js
+module.exports = function( dir, ext, cb )
+{
+	require( 'fs' ).readdir( dir, function( err, data )
+	{
+		if ( err )
+			return cb( err );
+		var path = require( 'path' );
+		var files = data.filter( function( f )
+		{
+			return path.extname( f ) == '.' + ext;
+		} )
+		return cb( null, files );
+	} );
+};
 ```
