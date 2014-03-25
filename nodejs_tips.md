@@ -10,6 +10,7 @@
 - [Read file content synchronously](#read-file-content-synchronously)
 - [Read file content asynchronously](#read-file-content-asynchronously)
 - [Create custom module](#create-custom-module)
+- [Performing HTTP GET request](#performing-http-get-request)
 
 # Search a package
 `npm search <package>`
@@ -195,4 +196,17 @@ module.exports = function( dir, ext, cb )
 		return cb( null, files );
 	} );
 };
+```
+
+# Performing HTTP GET request
+Perform HTTP GET request to the URL from command-line and print it out into the console.
+```js
+require( 'http' ).get( process.argv[2], function( response )
+{
+	// type of response is Stream
+	// convert Buffer into string setting encoding
+	response.setEncoding( 'utf8' );
+	response.on( 'data', console.log ); // on 'data' print it into the stdout
+	response.on( 'error', console.error ); // on 'error' print it into the sdterr
+} );
 ```
