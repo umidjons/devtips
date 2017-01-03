@@ -1,3 +1,7 @@
+# Integration testing Yii2 model with Codeception using fixtures and Yii2 module
+
+## Prepare database
+
 Create database for tests.
 ```mysql
 CREATE DATABASE mydb_test CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -21,6 +25,8 @@ $db = require(__DIR__ . '/db.php');
 $db['dsn'] = 'mysql:host=localhost;dbname=mydb_test';
 return $db;
 ```
+
+## Book model
 
 File `models/Book.php`:
 ```php
@@ -77,6 +83,8 @@ class Book extends \yii\db\ActiveRecord
 }
 ```
 
+## Prepare fixture
+
 Enable `Yii2` module in `tests/unit.suite.yml`:
 ```yaml
 class_name: UnitTester
@@ -120,6 +128,8 @@ return [
 ];
 ```
 
+## Test implementation
+
 Implement integration tests for Book in `tests/unit/models/BookTest.php`:
 ```php
 <?php
@@ -160,6 +170,8 @@ class BookTest extends \Codeception\Test\Unit
     }
 }
 ```
+
+## Test execution & output
 
 Run test:
 ```sh
