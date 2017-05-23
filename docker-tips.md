@@ -39,6 +39,11 @@ Run process by specified user (in docker it would be as PID=1)
 docker run -it --rm ubuntu:trusty gosu root ps aux
 ```
 
+Clear dangling images
+```bash
+docker rmi $(docker images -qf dangling=true)
+```
+
 ## Dockerization Best Practices
 
 ### Clear downloaded packages
@@ -46,6 +51,13 @@ docker run -it --rm ubuntu:trusty gosu root ps aux
 On debian based images we can remove downloaded archives/installers/packages with the following command:
 ```bash
 rm -rf /var/lib/apt/lists/*
+```
+
+Install packages without documentation and clear packages example:
+```Dockerfile
+RUN yum -y --setopt=tsflags=nodocs update && \
+    yum -y --setopt=tsflags=nodocs install httpd && \
+    yum clean all
 ```
 
 ### Apache Dockerization tips
@@ -212,4 +224,40 @@ fi
 
 # Mark as installed
 touch /installed.lock
+```
+
+## Push Image into Central Docker Host
+
+Configure CLI
+```bash
+aws configure
+```
+
+List Repositories
+```bash
+aws ecr describe-repositories
+```
+
+Create new repository
+```bash
+aws ecr create-repository --repository-name <repo-name>
+aws ecr create-repository --repository-name aurea/df-scm
+```
+
+List images from the specified repository:
+```bash
+aws ecr --repository-name=<repo-name> list-images
+aws ecr --repository-name=aurea/df-scm list-images
+```
+
+Tag existing image:
+```bash
+docker tag <image-name> 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/<product-name>:<version or tag>
+docker tag prod_testrail_app 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/df-scm:prod_testrail_app
+```
+
+Push image into repository:
+```bash
+docker push 892905447879.dkr.ecr.us-east-1.amazonaws.com/<product-name>:<version or tag>
+docker push 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/df-scm:prod_testrail_app
 ```
