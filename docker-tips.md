@@ -44,6 +44,16 @@ Clear dangling images
 docker rmi $(docker images -qf dangling=true)
 ```
 
+Show Docker Daemon status:
+```bash
+sudo service docker status
+```
+
+Restart Docker Daemon:
+```bash
+sudo service docker restart
+```
+
 ## Dockerization Best Practices
 
 ### Clear downloaded packages

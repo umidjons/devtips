@@ -14,6 +14,12 @@ yum --showduplicates list php
 yum --showduplicates list php-5.3.29
 ```
 
+Search packages:
+```bash
+yum search all <package name>
+yum search all mod_ssl
+```
+
 Find out package dependencies without installing it:
 ```bash
 # We need repoquery from yum-utils

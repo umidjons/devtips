@@ -159,6 +159,13 @@ sudo service iptables save
 - `set -x` prints each command before executing it
 - `set -o pipefail` sets the exit code of a pipeline to the rightmost command to exit with a non-zero status, or zero if all commands of the pipeline exit successfully
 
+## Using shell variable inside `sed`
+
+```bash
+# $var is a shell variable
+sed -i "s|$var|r_str|g" file_name
+```
+
 ## Signals
 
 - [Handling signals in bash](http://linuxcommand.org/wss0160.php)
