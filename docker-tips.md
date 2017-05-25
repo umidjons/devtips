@@ -90,6 +90,13 @@ ErrorLog /proc/self/fd/2
 CustomLog /proc/self/fd/1 combined
 ```
 
+Other solution:
+```Dockerfile
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
+```
+
 Set document root:
 ```bash
 sed -ri -e 's!^(DocumentRoot)(\s*\S+)!\1 "/var/www/mysite"!g' /etc/httpd/conf/httpd.conf
@@ -264,6 +271,11 @@ Tag existing image:
 ```bash
 docker tag <image-name> 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/<product-name>:<version or tag>
 docker tag prod_testrail_app 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/df-scm:prod_testrail_app
+```
+
+Login into AWS:
+```bash
+eval $(aws ecr get-login)
 ```
 
 Push image into repository:
