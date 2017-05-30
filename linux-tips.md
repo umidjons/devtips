@@ -37,6 +37,9 @@ tar -czf discovery.tar.gz discovery
 # Exclude folder itself
 cd folder
 tar -czf ../folder.tar.gz *
+
+# Archive gbuildserver/ into gbuildserver.tar.gz excluding directory log/
+tar --exclude='./gbuildserver/log' -czvf gbuildserver.tar.gz ./gbuildserver/
 ```
 
 Extracting:

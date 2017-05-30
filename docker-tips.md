@@ -243,11 +243,23 @@ fi
 touch /installed.lock
 ```
 
+## Limit uploads and downloads
+
+File `/etc/docker/daemon.json`:
+```json
+{
+    "max-concurrent-downloads": 1,
+    "max-concurrent-uploads": 1
+}
+```
+
 ## Push Image into Central Docker Host
 
 Configure CLI
 ```bash
 aws configure
+# or
+sudo aws configure
 ```
 
 List Repositories
@@ -276,10 +288,152 @@ docker tag prod_testrail_app 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/
 Login into AWS:
 ```bash
 eval $(aws ecr get-login)
+# or
+eval $(sudo aws ecr get-login)
 ```
 
 Push image into repository:
 ```bash
 docker push 892905447879.dkr.ecr.us-east-1.amazonaws.com/<product-name>:<version or tag>
 docker push 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/df-scm:prod_testrail_app
+```
+
+Deleting the image:
+```bash
+aws ecr batch-delete-image --repository-name <repo-name> --image-ids imageDigest=<imageDigest>
+
+aws ecr batch-delete-image --repository-name 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/df-scm --image-ids imageDigest=sha256:acaa3ddbb21298145991f5333e0d76912fbe9121bb436e18dcce422e7003f4d1
+```
+
+## Find out enforcer rule violation
+Get container name:
+```bash
+docker ps -a --filter label="com.trilogy.product=testrail"
+```
+
+Search rules by container name on http://10.69.11.89:12504/ and http://10.69.11.89:12507/:
+```bash
+{"id": "289dd909efb60a24222d039c4f9b172eba97abb1c228d0489cbc4435a2e06101", "name": "/festive_heisenberg", "violated_rule": "container name parts (STAGE/PRODUCT/SERVICE) must be equal to related labels com.trilogy.* labels", "count": 1, "last_timestamp": "2017-05-25T12:29:13.875542" },
+{"id": "289dd909efb60a24222d039c4f9b172eba97abb1c228d0489cbc4435a2e06101", "name": "/festive_heisenberg", "violated_rule": "must have CPU limit", "count": 1, "last_timestamp": "2017-05-25T12:29:13.878972" },
+```
+
+If enfocer kills container on build time, then fetch image like this with proper container name:
+```bash
+export DOCKER_HOST=tcp://10.69.11.89:2376
+docker run --name prod_testrail_app 892905447879.dkr.ecr.us-east-1.amazonaws.com/aurea/df-scm:prod_testrail_app
+```
+
+## Installing MySQL on Amazon Linux
+
+Following are instruction to install mysql server and configure it to work with large amount of data:
+```bash
+# install mysql 5.6 server
+yum install -y mysql56-server.x86_64
+
+# configure hostname
+echo HOSTNAME=`hostname` >> /etc/sysconfig/network
+
+# set net_read_timeout, net_write_timeout and max_allowed_packet parameters
+sed -ri -e "s|^\s*(\[mysqld\])|\1\nnet_read_timeout=7200|g" /etc/my.cnf
+sed -ri -e "s|^\s*(\[mysqld\])|\1\nnet_write_timeout=7200|g" /etc/my.cnf
+sed -ri -e "s|^\s*(\[mysqld\])|\1\nmax_allowed_packet=1G|g" /etc/my.cnf
+
+# start mysql daemon
+service mysqld start
+```
+
+## Transfer data from one db to another
+
+```bash
+# create database
+mysqladmin create mydestinationdb
+# transfer data from mysourcedb into mydestinationdb
+mysqldump -h my-source-host -umyuser -pmypassword mysourcedb --compress --verbose | mysql mydestinationdb
+# transfer mytable data from mysourcedb into mydestinationdb
+mysqldump -h my-source-host -umyuser -pmypassword mysourcedb --tables mytable --compress --verbose | mysql mydestinationdb
+```
+
+## Find out versions
+
+```bash
+httpd -v
+Server version: Apache/2.2.3
+Server built: Mar 27 2010 13:52:45
+```
+
+```bash
+ruby -v
+ruby 1.8.7
+```
+
+```bash
+rails -v
+rails 2.3.8
+```
+
+```bash
+gem -v
+gem 1.3.7
+```
+
+```bash
+rvm -v
+rvm 1.9.2
+```
+
+## Find out necessary packages for rvm
+
+`rvm requirements`
+
+## Find out installed gems
+
+`gem list`
+
+Sample output:
+```
+  LOCAL GEMS ***
+actionmailer (2.3.8, 2.2.2)
+actionpack (2.3.8, 2.2.2)
+activerecord (2.3.8, 2.2.2)
+activeresource (2.3.8, 2.2.2)
+activesupport (2.3.8, 2.2.2)
+builder (3.0.0)
+calendar (1.11.4)
+calendar_date_select (1.16.1)
+daemons (1.1.4)
+fastercsv (1.5.3)
+fastthread (1.0.7)
+hpricot (0.8.4)
+httpclient (2.2.1)
+libxml-ruby (2.2.2)
+mysql (2.8.1)
+open4 (1.0.1)
+passenger (2.2.15)
+Platform (0.4.0)
+popen4 (0.1.2)
+rack (1.1.0)
+rails (2.3.8, 2.2.2)
+rake (0.8.7)
+rufus-scheduler (2.0.6)
+```
+
+## Find out mysql databases size
+
+```mysql
+SELECT table_schema "DB Name", 
+Round(Sum(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" 
+FROM information_schema.tables 
+GROUP BY table_schema;
+```
+
+Sample output:
+```
++--------------------+---------------+
+| DB Name            | DB Size in MB |
++--------------------+---------------+
+| gbuildserver       |         264.3 | 
+| information_schema |           0.0 | 
+| mysql              |           0.5 | 
++--------------------+---------------+
+3 rows in set (0.35 sec)
 ```

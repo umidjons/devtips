@@ -4,6 +4,7 @@
 
 ```bash
 sudo ssh -i <key.pem> ec2-user@<instance-ip>
+sudo ssh -i <key.pem> <instance-ip>
 ```
 
 ## Work with packages
