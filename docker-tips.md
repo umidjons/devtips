@@ -362,6 +362,46 @@ Server built: Mar 27 2010 13:52:45
 ```
 
 ```bash
+httpd -V
+# OR
+apachectl -V
+
+Server version: Apache/2.2.3
+Server built:   Jan 31 2011 17:50:30
+Server''s Module Magic Number: 20051115:3
+Server loaded:  APR 1.2.7, APR-Util 1.2.7
+Compiled using: APR 1.2.7, APR-Util 1.2.7
+Architecture:   64-bit
+Server MPM:     Prefork
+  threaded:     no
+    forked:     yes (variable process count)
+Server compiled with....
+ -D APACHE_MPM_DIR="server/mpm/prefork"
+ -D APR_HAS_SENDFILE
+ -D APR_HAS_MMAP
+ -D APR_HAVE_IPV6 (IPv4-mapped addresses enabled)
+ -D APR_USE_SYSVSEM_SERIALIZE
+ -D APR_USE_PTHREAD_SERIALIZE
+ -D SINGLE_LISTEN_UNSERIALIZED_ACCEPT
+ -D APR_HAS_OTHER_CHILD
+ -D AP_HAVE_RELIABLE_PIPED_LOGS
+ -D DYNAMIC_MODULE_LIMIT=128
+ -D HTTPD_ROOT="/etc/httpd"
+ -D SUEXEC_BIN="/usr/sbin/suexec"
+ -D DEFAULT_PIDLOG="run/httpd.pid"
+ -D DEFAULT_SCOREBOARD="logs/apache_runtime_status"
+ -D DEFAULT_LOCKFILE="logs/accept.lock"
+ -D DEFAULT_ERRORLOG="logs/error_log"
+ -D AP_TYPES_CONFIG_FILE="conf/mime.types"
+ -D SERVER_CONFIG_FILE="conf/httpd.conf"
+```
+
+Show apache's loaded modules:
+```bash
+apachectl -M
+```
+
+```bash
 ruby -v
 ruby 1.8.7
 ```
@@ -436,4 +476,29 @@ Sample output:
 | mysql              |           0.5 | 
 +--------------------+---------------+
 3 rows in set (0.35 sec)
+```
+
+## Patching Apache's configuration
+
+```bash
+sed -ri -e '\%^<Directory /usr/share>%,\%^</Directory>% s|Require all granted|Require all denied|g' /etc/apache2/apache2.conf
+```
+
+`\%START%,\%END%` - this pattern limits matching context to the lines from START until END
+
+After execution above lines
+```htaccess
+<Directory /usr/share>
+    AllowOverride None
+    Require all granted
+</Directory>
+```
+
+becomes
+
+```htaccess
+<Directory /usr/share>
+    AllowOverride None
+    Require all denied
+</Directory>
 ```
