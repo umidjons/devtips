@@ -6,6 +6,7 @@ List installed packages into file and download it via `scp` to the local machine
 
 ```bash
 yum list installed > /tmp/installed
+apt list --installed > /tmp/installed
 
 # sudo scp -C -i <private-key.pem> user@ip:/remote-file /local-file
 # -C enable compression
@@ -172,4 +173,9 @@ sed -i "s|$var|r_str|g" file_name
 ## Signals
 
 - [Handling signals in bash](http://linuxcommand.org/wss0160.php)
-- 
+
+## Find word from files content inside current directory and its subdirectories
+
+```bash
+grep -r word *
+```

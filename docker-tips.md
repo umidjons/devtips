@@ -502,3 +502,91 @@ becomes
     Require all denied
 </Directory>
 ```
+
+## Dockerize Postfix
+
+File `Dockerfile`:
+
+```Dockerfile
+FROM ubuntu:16.04
+
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update -q --fix-missing \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y -q --fix-missing postfix rsyslog \
+    && postconf compatibility_level=2
+
+COPY entrypoint.sh /
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+```
+
+File `entrypoint.sh`:
+```bash
+#!/bin/bash
+
+postconf -e 'myhostname=subversion.quantumretail.com'
+postconf -e 'inet_interfaces=localhost'
+postconf -e 'mydestination=$myhostname, localhost.$mydomain, localhost'
+postconf -e 'relayhost=smtp.quantumretail.com'
+postconf -e 'debugger_command=PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin xxgdb $daemon_directory/$process_name $process_id & sleep 5'
+postconf -e 'html_directory=no'
+postconf -e 'message_size_limit=41943040'
+
+service rsyslog start;
+
+postfix start
+
+sleep 10;
+
+tail -f /var/log/mail.log
+```
+
+Build an image:
+```bash
+docker build -t postfix .
+```
+
+Run the image:
+```bash
+docker run --name postfix postfix
+```
+
+Install telnet client:
+```bash
+apt-get install -y inetutils-telnet
+```
+
+Send test mail:
+```bash
+telnet 127.0.0.1 25
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+220 subversion.quantumretail.com ESMTP Postfix (Ubuntu)
+ehlo localhost
+mail from: root@localhost
+rcpt to: root@localhost
+data
+Subject: My first mail on Postfix
+
+Hi, test.
+.
+quit
+Connection closed by foreign host.
+```
+
+Install `mailutils` to check inbox:
+```bash
+apt-get install mailutils
+```
+
+Then to read mails invoke `mail` command. Sample output may look like to the following:
+```
+"/var/mail/root": 1 message 1 new
+>N   1 root@localhost     Tue Jun  6 04:27  12/440   My first mail on Postfix
+? q
+Held 1 message in /var/mail/root
+```
