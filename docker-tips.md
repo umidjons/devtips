@@ -590,3 +590,25 @@ Then to read mails invoke `mail` command. Sample output may look like to the fol
 ? q
 Held 1 message in /var/mail/root
 ```
+
+## Migrating passwd, group, shadow files to another machine
+
+Assuming discovered `/etc/passwd`, `/etc/group` and `/etc/shadow` files are location in `image/assets/` folder, invoke following commands:
+
+```bash
+awk -v LIMIT=500 -F: '($3>=LIMIT) && ($3!=65534)' image/assets/passwd > image/assets/passwd.mig
+awk -v LIMIT=500 -F: '($3>=LIMIT) && ($3!=65534)' image/assets/group > image/assets/group.mig
+awk -v LIMIT=500 -F: '($3>=LIMIT) && ($3!=65534) {print $1}' image/assets/passwd | tee - |egrep -f - image/assets/shadow > image/assets/shadow.mig
+```
+
+Copy `image/assets/*.mig` files into container and merge with existing files:
+
+```Dockerfile
+COPY assets/*.mig /
+```
+
+```bash
+cat /passwd.mig >> /etc/passwd
+cat /group.mig >> /etc/group
+cat /shadow.mig >> /etc/shadow
+```
