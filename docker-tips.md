@@ -160,6 +160,14 @@ RUN set -e \
 ENTRYPOINT ["dumb-init", "--rewrite", "15:2", "top"]
 ```
 
+## Set apt|apt-get retry count
+
+File `/etc/apt/apt.conf.d/docker-apt-retry.conf`:
+
+```
+Acquire::Retries "100";
+```
+
 ## `HEALTHCHECK` example
 
 ```Dockerfile
