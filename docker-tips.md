@@ -168,6 +168,19 @@ File `/etc/apt/apt.conf.d/docker-apt-retry.conf`:
 Acquire::Retries "100";
 ```
 
+## Select fastest mirror automatically
+
+```Dockerfile
+RUN set -x \
+    && echo 'Acquire::Retries "100";' > /etc/apt/apt.conf.d/docker-apt-retry.conf \
+    && echo 'deb mirror://mirrors.ubuntu.com/mirrors.txt precise main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb mirror://mirrors.ubuntu.com/mirrors.txt precise-updates main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb mirror://mirrors.ubuntu.com/mirrors.txt precise-backports main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb mirror://mirrors.ubuntu.com/mirrors.txt precise-security main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && DEBIAN_FRONTEND=noninteractive apt-get update -q --fix-missing \
+    # ...
+```
+
 ## `HEALTHCHECK` example
 
 ```Dockerfile
@@ -404,9 +417,21 @@ Server compiled with....
  -D SERVER_CONFIG_FILE="conf/httpd.conf"
 ```
 
+Show enabled sites, including virtual hosts:
+```bash
+apache2ctl -S
+```
+
 Show apache's loaded modules:
 ```bash
 apachectl -M
+```
+
+Show apache's compiled (static) modules:
+```bash
+apache2ctl -l
+# or
+httpd -l
 ```
 
 ```bash

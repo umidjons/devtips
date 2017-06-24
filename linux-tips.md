@@ -179,3 +179,11 @@ sed -i "s|$var|r_str|g" file_name
 ```bash
 grep -r word *
 ```
+
+## Convert *.ppk to *.pem
+
+```bash
+sudo apt-get install putty-tools
+puttygen mykey.ppk -O private-openssh -o mykey.pem
+ssh -i mykey.pem someuser@somehost
+```
