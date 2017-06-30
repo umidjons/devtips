@@ -264,6 +264,22 @@ fi
 touch /installed.lock
 ```
 
+Adding cron task from file
+
+File `cronjobs.txt`:
+```
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+* * * * * echo "Hello" >> /var/log/jobs/hello_log
+# EOL is very important
+```
+
+Add tasks from file into crontab table:
+```bash
+crontab cronjobs.txt
+```
+
 ## Limit uploads and downloads
 
 File `/etc/docker/daemon.json`:
