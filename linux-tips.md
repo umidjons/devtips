@@ -225,3 +225,14 @@ Interfaces                     │ RX bps       pps     %│ TX bps       pps   
 ───────────────────────────────────────────────────────────────────────────────────────── Press i to enable additional information ─────────────────────────────────────────────────────────────────────────────────────────
  Mon Jun 26 10:40:48 2017                                                                                                                                                                                  Press ? for help 
 ```
+
+# My public IP address
+
+```bash
+curl ipinfo.io/ip
+```
+
+Sample output:
+```
+213.230.79.199
+```
