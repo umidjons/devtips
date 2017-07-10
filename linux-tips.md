@@ -236,3 +236,13 @@ Sample output:
 ```
 213.230.79.199
 ```
+
+# rsync command example
+
+```bash
+rsync -e="ssh -ttt -i /tmp/1" \
+    --protocol=30 \
+    --rsync-path="sudo rsync" \
+    -aAHXvzr --stats --human-readable --delete --itemize-changes \
+    saasops@192.168.1.3:/ftp /opt/st1/ftp
+```
