@@ -246,3 +246,8 @@ rsync -e="ssh -ttt -i /tmp/1" \
     -aAHXvzr --stats --human-readable --delete --itemize-changes \
     saasops@192.168.1.3:/ftp /opt/st1/ftp
 ```
+
+`rsync` with resume option
+```bash
+sudo rsync --rsh='ssh -i 192.168.1.3.pem' -av --progress --partial user@192.168.1.3:/opt/bitnami/bit_file.tar.gz .
+```
