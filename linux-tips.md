@@ -251,3 +251,21 @@ rsync -e="ssh -ttt -i /tmp/1" \
 ```bash
 sudo rsync --rsh='ssh -i 192.168.1.3.pem' -av --progress --partial user@192.168.1.3:/opt/bitnami/bit_file.tar.gz .
 ```
+
+# wget with retry and resume options
+
+```bash
+# --continue, -c - resume download if server supports Range header
+# --tries, -t    - retry 100 times on fails
+# --waitretry    - wait 1s between retries
+# --timeout, -T  - timeout 10s
+#
+# --progress=bar - bar indicator, like the following
+# 25% [++++++++++++++++++++++++++++++++++++=>    ] 10,111,389   117KB/s  eta 4m 17s ^
+#
+# --progress=dot - dot indicator, like the following
+#       0K ,,,,,,,, ,,,,,,,, ,,,,,,,, ,,,,,,,, ,,,,,,,, ,,,,,...  7% 5.49M 2m29s
+#    3072K ........ ........ ........ .....
+wget --progress=bar:force:noscroll --continue --tries=100 --waitretry=1 --timeout=10 -O moodle-latest-32.tgz https://download.moodle.org/stable32/moodle-latest-32.tgz
+wget --progress=dot:mega --continue --tries=100 --waitretry=1 --timeout=10 -O moodle-latest-32.tgz https://download.moodle.org/stable32/moodle-latest-32.tgz
+```

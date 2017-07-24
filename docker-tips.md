@@ -181,6 +181,23 @@ RUN set -x \
     # ...
 ```
 
+## Select Uzbekistan's mirror
+
+```Dockerfile
+RUN set -x \
+    && sed -ri -e 's|(^deb.*)|#\1|g' /etc/apt/sources.list \
+    && echo 'deb http://ubuntu.snet.uz/ubuntu/ trusty main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb http://ubuntu.snet.uz/ubuntu/ trusty-updates main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb http://ubuntu.snet.uz/ubuntu/ trusty-backports main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb http://ubuntu.snet.uz/ubuntu/ trusty-security main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb-src http://ubuntu.snet.uz/ubuntu/ trusty main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb-src http://ubuntu.snet.uz/ubuntu/ trusty-updates main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb-src http://ubuntu.snet.uz/ubuntu/ trusty-backports main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && echo 'deb-src http://ubuntu.snet.uz/ubuntu/ trusty-security main restricted universe multiverse' | cat - /etc/apt/sources.list > temp && mv temp /etc/apt/sources.list \
+    && apt-get update \
+    && ...
+```
+
 ## `HEALTHCHECK` example
 
 ```Dockerfile
