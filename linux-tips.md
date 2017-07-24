@@ -269,3 +269,40 @@ sudo rsync --rsh='ssh -i 192.168.1.3.pem' -av --progress --partial user@192.168.
 wget --progress=bar:force:noscroll --continue --tries=100 --waitretry=1 --timeout=10 -O moodle-latest-32.tgz https://download.moodle.org/stable32/moodle-latest-32.tgz
 wget --progress=dot:mega --continue --tries=100 --waitretry=1 --timeout=10 -O moodle-latest-32.tgz https://download.moodle.org/stable32/moodle-latest-32.tgz
 ```
+
+# Mount remote windows folder on ubuntu
+
+Share some folder on a remote windows machine with read-write permission.
+
+On ubuntu, invoke following commands:
+
+```bash
+# prepare target mount point
+sudo mkdir /media/some_folder
+
+# install required packages
+sudo apt-get update
+sudo apt-get install samba smbclient cifs-utils
+
+# check connection to the remote windows with samba client
+# this is also useful to determine compatible samba version
+# if you get negotiation error, then try to specify samba version with -m option
+smbclient -L 192.168.0.105 -U user1 -d 256
+
+# specify samba version -m SMB2|SMB3
+smbclient -L 192.168.0.105 -U user1 -m SMB2
+
+# mount shared remote windows folder into target mount point
+sudo mount -t cifs -o username=user1 //192.168.0.105/SomeSharedFolder /media/some_folder -o vers=2.0,rw
+
+# check mount
+sudo mount | grep some_folder
+
+# Here you can ready to trasfer files
+# for example
+sudo mc
+cd /media/some_folder
+
+# or
+cp ~/my_file /media/some_folder/
+```
