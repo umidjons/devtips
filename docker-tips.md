@@ -678,3 +678,49 @@ cat /passwd.mig >> /etc/passwd
 cat /group.mig >> /etc/group
 cat /shadow.mig >> /etc/shadow
 ```
+
+## Installing and configuring openssh-server
+
+Changed lines of `prepared_sshd_config` file:
+```
+# if you want to enable ssh for root, replace 'no' with 'yes' below:
+PermitRootLogin no
+AllowUsers myuser
+```
+
+File `supervisord_services.conf`:
+```
+[program:ssh]
+command=/usr/sbin/sshd -D
+autostart=true
+autorestart=true
+startretries=1
+startsecs=3
+user=root
+killasgroup=true
+stopasgroup=true
+redirect_stderr=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+```
+
+```Dockerfile
+FROM ubuntu:14.04
+
+SHELL ["bash", "-c"]
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing openssh-server sudo \
+    && useradd myuser -s /bin/bash -m \
+    && echo "myuser:mypassword" | chpasswd \
+    && echo "root:root@123" | chpasswd \
+    && usermod -a -G sudo myuser \
+    && mv /assets/supervisord_services.conf /etc/supervisor/conf.d/ \
+    && mv /assets/prepared_sshd_config /etc/ssh/sshd_config \
+    && mkdir -p /var/run/sshd
+
+EXPOSE 22
+
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+```
+

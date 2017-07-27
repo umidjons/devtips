@@ -20,3 +20,11 @@
 `p` - paste below
 `P` - paste above
 
+# Beautify JSON in vim
+
+To reformat/prettify JSON data in a currently opened file execute the following command in vim:
+
+```
+:%!python -m json.tool
+```
+
