@@ -20,6 +20,17 @@
 `p` - paste below
 `P` - paste above
 
+## Toggle paste mode when pasting from clipboard (prevent auto-indentation)
+
+- `:set paste`
+- paste text from clipboard, e.g: `ctrl-shift-v`
+- `:set nopaste`
+
+You can also bind a key in your `vimrc` for toggling paste mode:
+```
+set pastetoggle=<F3>
+```
+
 # Beautify JSON in vim
 
 To reformat/prettify JSON data in a currently opened file execute the following command in vim:

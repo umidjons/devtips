@@ -19,3 +19,16 @@
 `^b-d` - detach from the session
 `^b-$` - rename a session
 
+# Configuration options
+
+Create configuration file:
+
+```bash
+tmux show -g | cat > ~/.tmux.conf
+```
+
+Set `set -g ` prefix to each line.
+
+## Set alternate key
+
+`set -g prefix2 C-a` - now `CTRL-a` can be used as alternative to `CTRL-b`
