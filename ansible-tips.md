@@ -903,3 +903,14 @@ localhost | SUCCESS => {
     "changed": false
 }
 ```
+
+## Fix `FAILED! => {"failed": true, "msg": "ERROR! Timeout (12s) waiting for privilege escalation prompt: "}` issue
+
+In `ansible.cfg` set following settings:
+
+```
+[defaults]
+transport=paramiko
+timeout = 30
+; ...
+```
