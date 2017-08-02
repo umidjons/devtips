@@ -39,3 +39,23 @@ To reformat/prettify JSON data in a currently opened file execute the following 
 :%!python -m json.tool
 ```
 
+## Controlling window size
+
+`^w-` - decrease size (everything)
+`^w+` - increase size (everything)
+`^w>` - increase size vertically
+`^w<` - decrease size vertically
+
+## Searching a text in files
+
+`:vimgrep`
+
+Example: `:vimgrep /database/ ../**/*.java`
+
+`:cn[ext]` - next result
+`:cp[revious]` - previous result
+`:cnf` - next result in a next file
+`:cpf` - previous result in a previous file
+`:cr[ewind]` - first result
+`:cla[st]` - last result
+
