@@ -188,6 +188,12 @@ puttygen mykey.ppk -O private-openssh -o mykey.pem
 ssh -i mykey.pem someuser@somehost
 ```
 
+## Remove ssh key entry for host from ssh config file
+
+```bash
+ssh-keygen -f "/home/umidjons/.ssh/known_hosts" -R 172.17.0.3
+```
+
 ## Network monitoring with `bmon`
 
 Install `bmon` with `sudo apt-get install bmon`.
