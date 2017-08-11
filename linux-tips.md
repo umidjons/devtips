@@ -320,3 +320,24 @@ find <your dir> -type f -print0 | xargs -0 stat --format '%Y :%y %n' | sort -nr 
 # for example:
 find /data/html -type f -print0 | xargs -0 stat --format '%Y :%y %n' | sort -nr | cut -d: -f2- | head
 ```
+
+# Split and restore files
+
+Split:
+```bash
+split -b <size> <input-file> <prefix> --additional-suffix=<extension>
+split -b 30M DumpFile.sql.gz part_ --additional-suffix=.sql.gz
+```
+
+Check splitted files with `ls -1` command:
+```
+DumpFile.sql.gz
+part_aa.sql.gz
+part_ab.sql.gz
+part_ac.sql.gz
+```
+
+Join partial files:
+```bash
+cat part_*.sql.gz > RestoredDumpFile.sql.gz
+```
