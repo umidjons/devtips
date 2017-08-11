@@ -312,3 +312,11 @@ cd /media/some_folder
 # or
 cp ~/my_file /media/some_folder/
 ```
+
+# List recently created/modified files
+
+```bash
+find <your dir> -type f -print0 | xargs -0 stat --format '%Y :%y %n' | sort -nr | cut -d: -f2- | head
+# for example:
+find /data/html -type f -print0 | xargs -0 stat --format '%Y :%y %n' | sort -nr | cut -d: -f2- | head
+```
