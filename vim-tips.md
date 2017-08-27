@@ -59,3 +59,23 @@ Example: `:vimgrep /database/ ../**/*.java`
 `:cr[ewind]` - first result
 `:cla[st]` - last result
 
+# Delete around
+
+Suppose we have this text:
+```
+test string with [brackets].
+```
+
+Navigate to `[brackets]` text and execute the following command:
+
+`da[` - will delete text `[brackets]`.
+
+You can combine it with other symbols too, for example:
+```
+da [
+da {
+da (
+da `
+da "
+da '
+```
