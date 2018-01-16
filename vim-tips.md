@@ -157,4 +157,16 @@ m        m{a-zA-Z}      mark current position with mark {a-zA-Z}
 `:r [file]` - insert the contents of [file] below the cursor
 `:r! {command}` - insert the standard output of {command} below the cursor
 
+# Join the line
 
+`J` - join the line by deleting the line break
+
+# Undo and Redo
+
+`u` - undo
+`U` - undo line
+`CTRL-R` - redo
+
+# Reload original version of the file
+
+`:e!` - reloads the file without changes
