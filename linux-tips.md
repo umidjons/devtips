@@ -26,6 +26,9 @@ Example:
 ```bash
 zip -r init_d.zip /etc/init.d/
 zip -r cron_daily.zip /etc/cron.daily/
+
+# Exclude folder itself
+cd folder; zip -r ../folder.zip *
 ```
 
 ### Tar Archiver
