@@ -341,3 +341,73 @@ Join partial files:
 ```bash
 cat part_*.sql.gz > RestoredDumpFile.sql.gz
 ```
+
+# Using update-rc.d to start/stop redis-server on boot/shutdown
+
+List boot scripts for `redis-server`
+
+```bash
+sudo ls /etc/rc*.d -1l | grep redis
+```
+
+Output
+
+```
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 K20redis-server -> ../init.d/redis-server                                                                                                                                                                                               
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 K20redis-server -> ../init.d/redis-server                                                                                                                                                                                               
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 S20redis-server -> ../init.d/redis-server                                                                                                                                                                                               
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 S20redis-server -> ../init.d/redis-server                                                                                                                                                                                               
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 S20redis-server -> ../init.d/redis-server                                                                                                                                                                                               
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 S20redis-server -> ../init.d/redis-server                                                                                                                                                                                               
+lrwxrwxrwx 1 root root  22 Apr 27 10:32 K20redis-server -> ../init.d/redis-server
+```
+
+Remove boot scripts for `redis-server`
+
+```bash
+sudo update-rc.d -f redis-server remove
+```
+
+Output
+
+```
+ Removing any system startup links for /etc/init.d/redis-server ...
+   /etc/rc0.d/K20redis-server
+   /etc/rc1.d/K20redis-server
+   /etc/rc2.d/S20redis-server
+   /etc/rc3.d/S20redis-server
+   /etc/rc4.d/S20redis-server
+   /etc/rc5.d/S20redis-server
+   /etc/rc6.d/K20redis-server
+```
+
+Generate boot scripts for `redis-server`
+
+```bash
+sudo update-rc.d -f redis-server defaults
+```
+
+Output
+
+```
+ Adding system startup for /etc/init.d/redis-server ...
+   /etc/rc0.d/K20redis-server -> ../init.d/redis-server
+   /etc/rc1.d/K20redis-server -> ../init.d/redis-server
+   /etc/rc6.d/K20redis-server -> ../init.d/redis-server
+   /etc/rc2.d/S20redis-server -> ../init.d/redis-server
+   /etc/rc3.d/S20redis-server -> ../init.d/redis-server
+   /etc/rc4.d/S20redis-server -> ../init.d/redis-server
+   /etc/rc5.d/S20redis-server -> ../init.d/redis-server
+```
+
+Check one of the scripts
+
+```bash
+sudo /etc/rc5.d/S20redis-server status                                                                                                                                                                                                                             
+```
+
+Output
+
+```
+redis-server is running
+```
